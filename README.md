@@ -33,5 +33,9 @@ module.exports = {
 }
 ```
 
+If everything works correctly you should be able to view an `allStrapiNavigation` option inside GraphiQL.
+
+![Example of allStrapiNavigation option in GraphiQL](success-example.png)
+
 ## Credits
 Heavily inspired by [edardev's](https://github.com/edardev/gatsby-source-strapi-plugin-navigation) sourcing plugin.
