@@ -1,14 +1,51 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/node-apis/
- */
-// You can delete this file if you're not using it
+const fetch = require("node-fetch")
 
-/**
- * You can uncomment the following line to verify that
- * your plugin is being loaded in your site.
- *
- * See: https://www.gatsbyjs.com/docs/creating-a-local-plugin/#developing-a-local-plugin-that-is-outside-your-project
- */
-exports.onPreInit = () => console.log("Loaded gatsby-starter-plugin")
+function buildUrls(navigationIdsOrSlugs, apiURL, type) {
+  return navigationIdsOrSlugs
+    .map((idOrSlug) => `${apiURL}/${idOrSlug}${type ? `?type=${type}` : ""}`)
+}
+
+const fetchNavigationItems = async (urls, headers) => {
+  return await Promise.all(
+    urls.map(async (u) => {
+      const response = await fetch(u, {
+        headers: headers,
+      })
+      return await response.json()
+    }),
+  )
+}
+
+const STRAPI_NODE_TYPE = `StrapiNavigation`
+
+exports.sourceNodes = async ({
+  actions: {createNode},
+  createNodeId,
+  createContentDigest,
+  reporter,
+}, {apiURL, token, navigationIdsOrSlugs, type}) => {
+  const urls = buildUrls(navigationIdsOrSlugs, apiURL, type)
+
+  const headers = {}
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`
+  }
+
+  const [navigationItems] = await fetchNavigationItems(urls, headers)
+
+  navigationItems.map((item) =>
+    createNode({
+      ...item,
+      id: createNodeId(`${STRAPI_NODE_TYPE}-${item.id}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: STRAPI_NODE_TYPE,
+        content: JSON.stringify(item),
+        contentDigest: createContentDigest(item),
+      },
+    }))
+
+  reporter.success("Successfully sourced all navigation items.")
+}

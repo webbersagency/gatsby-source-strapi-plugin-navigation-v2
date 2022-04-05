@@ -1,7 +1,17 @@
 {
-  "name": "gatsby-starter-plugin",
+  "name": "gatsby-source-strapi-plugin-navigation-v2",
   "version": "1.0.0",
-  "description": "A minimal boilerplate for the essential files Gatsby looks for in a plugin",
+  "description": "Gatsby source plugin to fetch and expose the Navigations as GraphQL nodes in Gatsby from Strapi using the strapi-plugin-navigation API.",
+  "homepage": "https://github.com/webbersagency/gatsby-source-strapi-plugin-navigation-v2#readme",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:webbersagency/gatsby-source-strapi-plugin-navigation-v2.git"
+  },
+  "author": {
+    "name": "Webbers",
+    "email": "info@webbers.com",
+    "url": "https://webbers.com"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +19,19 @@
   },
   "keywords": [
     "gatsby",
-    "gatsby-plugin"
+    "strapi",
+    "navigation",
+    "gatsby-plugin",
+    "gatsby-source",
+    "strapi-plugin",
+    "strapi-plugin-navigation",
+    "strapi-plugin-navigation-v2"
   ],
-  "author": "Kyle Gill <kyle.robert.gill@gmail.com>",
-  "license": "0BSD"
+  "license": "0BSD",
+  "peerDependencies": {
+    "gatsby": "^4.9.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
 }
