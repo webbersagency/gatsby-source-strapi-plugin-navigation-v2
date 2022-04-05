@@ -6,11 +6,11 @@ This plugin sources the [strapi-plugin-navigation](https://github.com/VirtusLab-
 
 yarn:
 ```bash
-yarn add gatsby-source-strapi-plugin-navigation
+yarn add gatsby-source-strapi-plugin-navigation-v2
 ```
 npm:
 ```bash
-npm install gatsby-source-strapi-plugin-navigation
+npm install gatsby-source-strapi-plugin-navigation-v2
 ```
 
 ## How to use
@@ -21,12 +21,12 @@ module.exports = {
     {
       resolve: "gatsby-source-strapi-plugin-navigation-v2",
       options: {
-        apiURL: "Strapi url",
+        apiURL: "localhost:1337",
         navigationIdsOrSlugs: [
           "api/navigation/render/1"
         ],
         type: "tree", // optional
-        token: "Strapi token" // optional
+        token: "strapi_token" // optional
       }
     }
   ]
