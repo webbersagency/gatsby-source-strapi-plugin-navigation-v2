@@ -32,19 +32,21 @@ exports.sourceNodes = async ({
     headers["Authorization"] = `Bearer ${token}`
   }
 
-  const [navigationItems] = await fetchNavigationItems(urls, headers)
+  const navigationItemsArr = await fetchNavigationItems(urls, headers)
 
-  navigationItems.map((item) =>
-    createNode({
-      ...item,
-      id: createNodeId(`${STRAPI_NODE_TYPE}-${item.id}`),
-      parent: null,
-      children: [],
-      internal: {
-        type: STRAPI_NODE_TYPE,
-        content: JSON.stringify(item),
-        contentDigest: createContentDigest(item),
-      },
+  navigationItemsArr.map((navigationItems) =>
+    navigationItems.map((item) => {
+      createNode({
+        ...item,
+        id: createNodeId(`${STRAPI_NODE_TYPE}-${item.id}`),
+        parent: null,
+        children: [],
+        internal: {
+          type: STRAPI_NODE_TYPE,
+          content: JSON.stringify(item),
+          contentDigest: createContentDigest(item),
+        },
+      })
     }))
 
   reporter.success("Successfully sourced all navigation items.")
