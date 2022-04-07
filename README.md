@@ -32,10 +32,16 @@ module.exports = {
   ]
 }
 ```
+Alternatively you can use an object with keys that will later map to the navigation items via the `key` property.
+```js
+navigationIdsOrSlugs: {
+  mainMenu: "api/navigation/render/1"
+}
+```
 
 If everything works correctly you should be able to view an `allStrapiNavigation` option inside GraphiQL.
 
 ![Example of allStrapiNavigation option in GraphiQL](success-example.png)
 
 ## Credits
-Heavily inspired by [edardev's](https://github.com/edardev/gatsby-source-strapi-plugin-navigation) sourcing plugin.
+Heavily inspired by [edardev's sourcing plugin](https://github.com/edardev/gatsby-source-strapi-plugin-navigation).

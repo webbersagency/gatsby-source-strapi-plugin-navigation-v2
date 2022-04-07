@@ -1,7 +1,12 @@
 const fetch = require("node-fetch")
 
 function buildUrls(navigationIdsOrSlugs, apiURL, type) {
-  return navigationIdsOrSlugs
+  if (Array.isArray(navigationIdsOrSlugs)) {
+    return navigationIdsOrSlugs
+      .map((idOrSlug) => `${apiURL}/${idOrSlug}${type ? `?type=${type}` : ""}`)
+  }
+
+  return Object.values(navigationIdsOrSlugs)
     .map((idOrSlug) => `${apiURL}/${idOrSlug}${type ? `?type=${type}` : ""}`)
 }
 
@@ -34,9 +39,15 @@ exports.sourceNodes = async ({
 
   const navigationItemsArr = await fetchNavigationItems(urls, headers)
 
-  navigationItemsArr.map((navigationItems) =>
+  let keys
+
+  if (typeof navigationIdsOrSlugs === "object" && !Array.isArray(navigationIdsOrSlugs)) {
+    keys = Object.keys(navigationIdsOrSlugs)
+  }
+
+  navigationItemsArr.map((navigationItems, index) =>
     navigationItems.map((item) => {
-      createNode({
+      const node = {
         ...item,
         id: createNodeId(`${STRAPI_NODE_TYPE}-${item.id}`),
         parent: null,
@@ -46,7 +57,13 @@ exports.sourceNodes = async ({
           content: JSON.stringify(item),
           contentDigest: createContentDigest(item),
         },
-      })
+      }
+
+      if (keys) {
+        node["key"] = keys[index]
+      }
+
+      createNode(node)
     }))
 
   reporter.success("Successfully sourced all navigation items.")
